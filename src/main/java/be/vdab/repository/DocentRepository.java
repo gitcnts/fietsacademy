@@ -17,5 +17,9 @@ public class DocentRepository {
 //			entityManager.close();
 //		}
 	}
+	
+	public void create(Docent docent, EntityManager entityManager) {
+		entityManager.persist(docent);
+	}
 
 }
