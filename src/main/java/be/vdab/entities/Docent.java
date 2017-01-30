@@ -2,6 +2,7 @@ package be.vdab.entities;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -88,6 +89,11 @@ public class Docent implements Serializable {
 
 	public String getNaam() {
 		return voornaam + ' ' + familienaam;
+	}
+	
+	public void opslag(BigDecimal percentage) {
+		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+		wedde = wedde.multiply(factor).setScale(2, RoundingMode.HALF_UP);
 	}
 
 	public static boolean isVoornaamValid(String voornaam) {
