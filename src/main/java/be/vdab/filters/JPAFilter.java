@@ -29,6 +29,7 @@ public class JPAFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws ServletException, IOException {
+		entityManagers.set(entityManagerFactory.createEntityManager());
 		try {
 			request.setCharacterEncoding("UTF-8");	// voor vreemde tekens op te vangen in de requests
 			chain.doFilter(request, response);
