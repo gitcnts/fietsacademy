@@ -1,12 +1,15 @@
 package be.vdab.services;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import javax.persistence.PersistenceException;
 
 import be.vdab.entities.Docent;
 import be.vdab.repository.DocentRepository;
+import be.vdab.valueobjects.AantalDocentenPerWedde;
+import be.vdab.valueobjects.VoornaamEnId;
 
 public class DocentService extends AbstractService{
 	
@@ -47,6 +50,26 @@ public class DocentService extends AbstractService{
 			rollback();
 			throw ex;
 		}
+	}
+	
+	public List<Docent> findByWeddeBetween(BigDecimal van, BigDecimal tot, int vanafRij, int aantalRijen) {
+		return docentRepository.findByWeddeBetween(van, tot, vanafRij, aantalRijen);
+	}
+	
+//	public List<String> findVoornamen() {
+//		return docentRepository.findVoornamen();
+//	}
+	
+	public List<VoornaamEnId> findVoornamen() {
+		return docentRepository.findVoornamen();
+	}
+	
+	public BigDecimal findMaxWedde() {
+		return docentRepository.findMaxWedde();
+	}
+	
+	public List<AantalDocentenPerWedde> findAantalDocentenPerWedde() {
+		return docentRepository.findAantalDocentenPerWedde();
 	}
 	
 }

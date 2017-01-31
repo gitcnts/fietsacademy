@@ -69,6 +69,20 @@ td {
 	padding-right: 0.2em;
 }
 
+td:first-child, td:last-child {
+	text-align: right;
+}
+
+.anders td:first-child {
+	padding-right: 0.5em;
+	text-align: right;
+}
+
+.anders td:nth-child(2) div {
+	background: linear-gradient(to right, wheat, orange);
+	padding-left: 0.5em;
+}
+
 tbody tr:nth-child(even) {
 	background-color: #FAFAFA;
 }
