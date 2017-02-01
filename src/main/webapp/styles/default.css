@@ -14,7 +14,7 @@ nav  a:hover {
 	text-decoration: none;
 }
 
-nav ul,nav ul li ul {
+nav ul, nav ul li ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -26,7 +26,7 @@ nav>ul>li {
 	position: relative;
 }
 
-nav ul li a,nav ul li:hover ul {
+nav ul li a, nav ul li:hover ul {
 	display: block;
 }
 
@@ -43,7 +43,7 @@ nav ul li:hover {
 	background-color: #E8E8E8;
 }
 
-nav>ul>li>a,nav ul li ul li a {
+nav>ul>li>a, nav ul li ul li a {
 	color: black;
 	line-height: 1.8em;
 	padding: 0 0.5em;
@@ -54,12 +54,12 @@ h1 {
 	clear: both;
 }
 
-table,th,td {
+table, th, td {
 	border: 1px solid silver;
 	border-collapse: collapse;
 }
 
-thead tr,tfoot tr {
+thead tr, tfoot tr {
 	color: white;
 	background-color: gray;
 }
@@ -99,18 +99,18 @@ label {
 	cursor: pointer;
 }
 
-input,select {
+input, select {
 	display: block;
 	font-size: 1.1em;
 	margin-bottom: 1em;
 	margin-top: 0.2em;
 }
 
-input:focus,textarea:focus,select:focus {
+input:focus, textarea:focus, select:focus {
 	background-color: #FFFFD6
 }
 
-input[type='checkbox'],input[type='radio'] {
+input[type='checkbox'], input[type='radio'] {
 	display: inline;
 }
 

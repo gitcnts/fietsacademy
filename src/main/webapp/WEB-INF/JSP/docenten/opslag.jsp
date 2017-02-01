@@ -12,8 +12,7 @@
 		<label>Percentage: <span>${fouten.percentage}</span> <input
 			name='percentage' value='${param.percentage}' type='number'
 			min='0.01' step='0.01' autofocus required>
-		</label> 
-		<input type='submit' value='Opslag' id='opslagknop'>
+		</label> <input type='submit' value='Opslag' id='opslagknop'>
 	</form>
 	<script>
 		document.getElementById('opslagform').onsubmit = function() {

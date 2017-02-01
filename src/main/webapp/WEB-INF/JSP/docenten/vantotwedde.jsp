@@ -15,7 +15,8 @@
 			value='${param.van}' type='number' min='0' step='0.01' required
 			autofocus>
 		</label> <label>Tot:<span>${fouten.tot}</span> <input name='tot'
-			type='number' value='${empty tot ? param.tot : tot}' min='0' step='0.01' required>
+			type='number' value='${empty tot ? param.tot : tot}' min='0'
+			step='0.01' required>
 		</label> <input type='submit' value='Zoeken'>
 	</form>
 	<c:if test="${not empty param and empty fouten and empty docenten}">

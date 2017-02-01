@@ -3,7 +3,7 @@
 <!doctype html>
 <html lang='nl'>
 <head>
-<v:head title='Algemene opslag docenten'/>
+<v:head title='Algemene opslag docenten' />
 </head>
 <body>
 	<v:menu />
