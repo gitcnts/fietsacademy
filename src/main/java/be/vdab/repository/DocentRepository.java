@@ -60,5 +60,12 @@ public class DocentRepository extends AbstractRepository {
 			+ "group by d.wedde",
 			AantalDocentenPerWedde.class).getResultList();
 	}
+	
+	public void algemeneOpslag(BigDecimal factor) {
+		getEntityManager().createNamedQuery("Docent.algemeneOpslag")
+		.setParameter("factor", factor)
+		.executeUpdate();
+	}
+
 
 }
