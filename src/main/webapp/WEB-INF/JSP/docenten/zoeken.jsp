@@ -22,6 +22,25 @@
 		${docent.geslacht == "MAN" ? "&#x2642;" : "&#x2640;"}
 		${docent.naam}, wedde: &euro; <fmt:formatNumber
 			value="${docent.wedde}" />
+		<c:if test='${not empty docent.bijnamen}'>
+			<h2>Bijnamen</h2>
+			<form method='post'>
+				<ul>
+					<c:forEach items='${docent.bijnamen}' var='bijnaam'>
+						<li><label>${bijnaam} <input type='checkbox'
+								name='bijnaam' value='${bijnaam}'></label></li>
+					</c:forEach>
+				</ul>
+				<input type='submit' value='Bijnamen verwijderen' name='verwijderen'>
+			</form>
+		</c:if>
+		<br>
+		<br>
+		<form method='post' id='toevoegform'>
+			<label>Bijnaam: <span>${fouten.bijnaam}</span> <input
+				name='bijnaam' value='${param.bijnaam}' required></label> <input
+				type='submit' value='Toevoegen' id='toevoegknop'>
+		</form>
 		<h2>Acties</h2>
 		<c:url value='/docenten/verwijderen.htm' var='verwijderURL'>
 			<c:param name='id' value='${docent.id}' />
@@ -36,5 +55,10 @@
 			value='Opslag'>
 		</a>
 	</c:if>
+	<script>
+		document.getElementById('toevoegform').onsubmit = function() {
+			document.getElementById('toevoegknop').disabled = true;
+		};
+	</script>
 </body>
 </html>
