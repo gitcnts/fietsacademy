@@ -10,7 +10,7 @@
 <body>
 	<v:menu />
 	<h1>Aantal docenten per wedde</h1>
-	<table class=”anders”>
+	<table class="anders">
 		<thead>
 			<tr>
 				<th>Wedde</th>

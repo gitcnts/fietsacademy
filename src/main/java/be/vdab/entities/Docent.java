@@ -31,6 +31,9 @@ public class Docent implements Serializable {
 	@CollectionTable(name = "docentenbijnamen", joinColumns = @JoinColumn(name = "docentid"))
 	@Column(name = "bijnaam")
 	private Set<String> bijnamen;
+//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+//	@JoinColumn(name = "campusid")
+//	private Campus campus;
 
 	protected Docent() { // default constructor is vereiste voor JPA
 	}
@@ -108,6 +111,14 @@ public class Docent implements Serializable {
 		return Collections.unmodifiableSet(bijnamen);
 	}
 
+//	public final Campus getCampus() {
+//		return campus;
+//	}
+//
+//	public final void setCampus(Campus campus) {
+//		this.campus = campus;
+//	}
+
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && !voornaam.trim().isEmpty();
 	}
@@ -139,6 +150,26 @@ public class Docent implements Serializable {
 
 	public void removeBijnaam(String bijnaam) {
 		bijnamen.remove(bijnaam);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (rijksRegisterNr ^ (rijksRegisterNr >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof Docent)) {
+			return false;
+		}
+		Docent docent = (Docent) obj;
+		return rijksRegisterNr == docent.rijksRegisterNr;
 	}
 
 }

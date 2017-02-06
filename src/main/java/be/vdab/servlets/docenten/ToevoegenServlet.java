@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import be.vdab.entities.Docent;
 import be.vdab.enums.Geslacht;
+import be.vdab.services.CampusService;
 import be.vdab.services.DocentService;
 import be.vdab.util.StringUtils;
 
@@ -25,36 +26,40 @@ public class ToevoegenServlet extends HttpServlet {
 	private static final String VIEW = "/WEB-INF/JSP/docenten/toevoegen.jsp";
 	private static final String REDIRECT_URL = "%s/docenten/zoeken.htm?id=%d";
 	private final transient DocentService docentService = new DocentService();
+	private final transient CampusService campusService = new CampusService();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		request.setAttribute("campussen", campusService.findAll());
 		request.getRequestDispatcher(VIEW).forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
 	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Map<String, String> fouten = new HashMap<>();
 		String voornaam = request.getParameter("voornaam");
-		if ( ! Docent.isVoornaamValid(voornaam)) {
+		if (!Docent.isVoornaamValid(voornaam)) {
 			fouten.put("voornaam", "verplicht");
 		}
 		String familienaam = request.getParameter("familienaam");
-		if ( ! Docent.isFamilienaamValid(familienaam)) {
+		if (!Docent.isFamilienaamValid(familienaam)) {
 			fouten.put("familienaam", "verplicht");
 		}
 		String weddeString = request.getParameter("wedde");
 		BigDecimal wedde = null;
 		if (StringUtils.isBigDecimal(weddeString)) {
 			wedde = new BigDecimal(weddeString);
-			if ( ! Docent.isWeddeValid(wedde)) {
+			if (!Docent.isWeddeValid(wedde)) {
 				fouten.put("wedde", "tik een positief getal of 0");
 			}
 		} else {
@@ -68,21 +73,26 @@ public class ToevoegenServlet extends HttpServlet {
 		long rijksRegisterNr = 0;
 		if (StringUtils.isLong(rijksRegisterNrString)) {
 			rijksRegisterNr = Long.parseLong(rijksRegisterNrString);
-			if ( ! Docent.isRijksRegisterNrValid(rijksRegisterNr)) {
+			if (!Docent.isRijksRegisterNrValid(rijksRegisterNr)) {
 				fouten.put("rijksregisternr", "verkeerde cijfers");
 			}
 		} else {
 			fouten.put("rijksregisternr", "verkeerde cijfers");
 		}
+		String campusId = request.getParameter("campussen");
+		if (campusId == null) {
+			fouten.put("campussen", "verplicht");
+		}
 		if (fouten.isEmpty()) {
 			Docent docent = new Docent(voornaam, familienaam, wedde, Geslacht.valueOf(geslacht), rijksRegisterNr);
+	//		campusService.read(Long.parseLong(campusId)).ifPresent(campus -> docent.setCampus(campus));
 			docentService.create(docent);
-			response.sendRedirect(response.encodeRedirectURL(String.format(
-					REDIRECT_URL, request.getContextPath(), docent.getId())));
+			response.sendRedirect(
+					response.encodeRedirectURL(String.format(REDIRECT_URL, request.getContextPath(), docent.getId())));
 		} else {
 			request.setAttribute("fouten", fouten);
+			request.setAttribute("campussen", campusService.findAll());
 			request.getRequestDispatcher(VIEW).forward(request, response);
 		}
 	}
 }
-
