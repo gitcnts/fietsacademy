@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -18,6 +19,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -46,6 +48,8 @@ public class Docent implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "campusid")
 	private Campus campus;
+	@ManyToMany(mappedBy = "docenten")
+	private Set<Verantwoordelijkheid> verantwoordelijkheden;
 
 	protected Docent() { // default constructor is vereiste voor JPA
 	}
@@ -56,7 +60,8 @@ public class Docent implements Serializable {
 		setWedde(wedde);
 		setGeslacht(geslacht);
 		setRijksRegisterNr(rijksRegisterNr);
-		this.bijnamen = new HashSet<>();
+		bijnamen = new HashSet<>();
+		verantwoordelijkheden = new LinkedHashSet<>();
 	}
 
 	public long getId() {
@@ -139,6 +144,37 @@ public class Docent implements Serializable {
 		}
 	}
 
+	public Set<Verantwoordelijkheid> getVerantwoordelijkheden() {
+		return Collections.unmodifiableSet(verantwoordelijkheden);
+	}
+
+	public void opslag(BigDecimal percentage) {
+		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
+		wedde = wedde.multiply(factor).setScale(2, RoundingMode.HALF_UP);
+	}
+
+	public void addBijnaam(String bijnaam) {
+		bijnamen.add(bijnaam);
+	}
+
+	public void removeBijnaam(String bijnaam) {
+		bijnamen.remove(bijnaam);
+	}
+
+	public void add(Verantwoordelijkheid verantwoordelijkheid) {
+		verantwoordelijkheden.add(verantwoordelijkheid);
+		if (!verantwoordelijkheid.getDocenten().contains(this)) {
+			verantwoordelijkheid.add(this);
+		}
+	}
+
+	public void remove(Verantwoordelijkheid verantwoordelijkheid) {
+		verantwoordelijkheden.remove(verantwoordelijkheid);
+		if (verantwoordelijkheid.getDocenten().contains(this)) {
+			verantwoordelijkheid.remove(this);
+		}
+	}
+
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && !voornaam.trim().isEmpty();
 	}
@@ -157,19 +193,6 @@ public class Docent implements Serializable {
 			getal += 2_000_000_000;
 		}
 		return rijksRegisterNr % 100 == 97 - getal % 97;
-	}
-
-	public void opslag(BigDecimal percentage) {
-		BigDecimal factor = BigDecimal.ONE.add(percentage.divide(BigDecimal.valueOf(100)));
-		wedde = wedde.multiply(factor).setScale(2, RoundingMode.HALF_UP);
-	}
-
-	public void addBijnaam(String bijnaam) {
-		bijnamen.add(bijnaam);
-	}
-
-	public void removeBijnaam(String bijnaam) {
-		bijnamen.remove(bijnaam);
 	}
 
 	@Override
