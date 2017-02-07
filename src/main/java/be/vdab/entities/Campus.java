@@ -5,7 +5,17 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.TelefoonNr;
@@ -26,8 +36,8 @@ public class Campus implements Serializable {
 	@CollectionTable(name = "campussentelefoonnrs", joinColumns = @JoinColumn(name = "campusid"))
 	@OrderBy("fax")
 	private Set<TelefoonNr> telefoonNrs;
-	@OneToMany
-	@JoinColumn(name = "campusid")
+	@OneToMany(mappedBy = "campus")
+	// @JoinColumn(name = "campusid")
 	@OrderBy("voornaam, familienaam")
 	private Set<Docent> docenten;
 
@@ -79,10 +89,16 @@ public class Campus implements Serializable {
 
 	public void add(Docent docent) {
 		docenten.add(docent);
+		if (docent.getCampus() != this) { // als de andere kant nog niet bijgewerkt is
+			docent.setCampus(this); // werk je de andere kant bij
+		}
 	}
 
 	public void remove(Docent docent) {
 		docenten.remove(docent);
+		if (docent.getCampus() == this) { // als de andere kant nog niet bijgewerkt is
+			docent.setCampus(null); // werk je de andere kant bij
+		}
 	}
 
 }

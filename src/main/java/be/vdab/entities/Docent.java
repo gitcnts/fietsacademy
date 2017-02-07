@@ -7,7 +7,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.*;
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import be.vdab.enums.Geslacht;
 
@@ -31,9 +43,9 @@ public class Docent implements Serializable {
 	@CollectionTable(name = "docentenbijnamen", joinColumns = @JoinColumn(name = "docentid"))
 	@Column(name = "bijnaam")
 	private Set<String> bijnamen;
-//	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-//	@JoinColumn(name = "campusid")
-//	private Campus campus;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "campusid")
+	private Campus campus;
 
 	protected Docent() { // default constructor is vereiste voor JPA
 	}
@@ -111,13 +123,21 @@ public class Docent implements Serializable {
 		return Collections.unmodifiableSet(bijnamen);
 	}
 
-//	public final Campus getCampus() {
-//		return campus;
-//	}
-//
-//	public final void setCampus(Campus campus) {
-//		this.campus = campus;
-//	}
+	public final Campus getCampus() {
+		return campus;
+	}
+
+	public final void setCampus(Campus campus) {
+		if (this.campus != null && this.campus.getDocenten().contains(this)) {
+			// als de andere kant nog niet bijgewerkt is
+			this.campus.remove(this); // werk je de andere kant bij
+		}
+		this.campus = campus;
+		if (campus != null && !campus.getDocenten().contains(this)) {
+			// als de andere kant nog niet bijgewerkt is
+			campus.add(this); // werk je de andere kant bij
+		}
+	}
 
 	public static boolean isVoornaamValid(String voornaam) {
 		return voornaam != null && !voornaam.trim().isEmpty();
