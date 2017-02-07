@@ -128,11 +128,11 @@ public class Docent implements Serializable {
 		return Collections.unmodifiableSet(bijnamen);
 	}
 
-	public final Campus getCampus() {
+	public Campus getCampus() {
 		return campus;
 	}
 
-	public final void setCampus(Campus campus) {
+	public void setCampus(Campus campus) {
 		if (this.campus != null && this.campus.getDocenten().contains(this)) {
 			// als de andere kant nog niet bijgewerkt is
 			this.campus.remove(this); // werk je de andere kant bij
