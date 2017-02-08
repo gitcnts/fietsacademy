@@ -1,5 +1,5 @@
 package be.vdab.entities;
-
+// comment to test
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashSet;
