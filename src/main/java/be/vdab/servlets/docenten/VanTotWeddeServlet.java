@@ -45,6 +45,10 @@ public class VanTotWeddeServlet extends HttpServlet {
 					request.setAttribute("aantalRijen", AANTAL_RIJEN);
 					List<Docent> docenten =
 							docentService.findByWeddeBetween(van, tot, vanafRij, AANTAL_RIJEN + 1);
+					for (Docent docent : docenten) {
+						System.out.println(docent.getCampus().getNaam());
+						
+					};
 					if (docenten.size() <= AANTAL_RIJEN) {
 						request.setAttribute("laatstePagina", true);
 					} else {

@@ -5,10 +5,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
+import javax.transaction.RollbackException;
 
 import be.vdab.entities.Docent;
 import be.vdab.exceptions.DocentBestaatAlException;
+import be.vdab.exceptions.RecordAangepastException;
 import be.vdab.repository.DocentRepository;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnId;
@@ -18,9 +21,9 @@ public class DocentService extends AbstractService {
 	private final DocentRepository docentRepository = new DocentRepository();
 
 	public Optional<Docent> read(long id) {
-		return docentRepository.read(id);
+		return docentRepository.readWithLock(id);
 	}
-	
+
 	public void create(Docent docent) {
 		if (docentRepository.findByRijksRegisterNr(docent.getRijksRegisterNr()).isPresent()) {
 			throw new DocentBestaatAlException();
@@ -51,12 +54,17 @@ public class DocentService extends AbstractService {
 		try {
 			docentRepository.read(id).ifPresent(docent -> docent.opslag(percentage));
 			commit();
+		} catch (RollbackException ex) {
+			if (ex.getCause() instanceof OptimisticLockException) {
+				throw new RecordAangepastException();
+			}
 		} catch (PersistenceException ex) {
 			rollback();
 			throw ex;
 		}
 	}
 
+	
 	public List<Docent> findByWeddeBetween(BigDecimal van, BigDecimal tot, int vanafRij, int aantalRijen) {
 		return docentRepository.findByWeddeBetween(van, tot, vanafRij, aantalRijen);
 	}
