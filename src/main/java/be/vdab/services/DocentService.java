@@ -13,11 +13,9 @@ import javax.transaction.RollbackException;
 import be.vdab.entities.Campus;
 import be.vdab.entities.Docent;
 import be.vdab.exceptions.DocentBestaatAlException;
-<<<<<<< HEAD
 import be.vdab.exceptions.RecordAangepastException;
-=======
+
 import be.vdab.repository.CampusRepository;
->>>>>>> refs/remotes/origin/master
 import be.vdab.repository.DocentRepository;
 import be.vdab.valueobjects.AantalDocentenPerWedde;
 import be.vdab.valueobjects.VoornaamEnId;
