@@ -1,5 +1,5 @@
 package be.vdab.entities;
-
+// comment to test testbranch
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -56,23 +56,23 @@ public class Campus implements Serializable {
 	protected Campus() {
 	}
 
-	public final long getId() {
+	public long getId() {
 		return id;
 	}
 
-	public final String getNaam() {
+	public String getNaam() {
 		return naam;
 	}
 
-	public final void setNaam(String naam) {
+	public void setNaam(String naam) {
 		this.naam = naam;
 	}
 
-	public final Adres getAdres() {
+	public Adres getAdres() {
 		return adres;
 	}
 
-	public final void setAdres(Adres adres) {
+	public void setAdres(Adres adres) {
 		this.adres = adres;
 	}
 
@@ -111,5 +111,5 @@ public class Campus implements Serializable {
 	public Manager getManager() {
 		return manager;
 	}
-
+	
 }
