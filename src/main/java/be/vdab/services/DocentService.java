@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import javax.persistence.OptimisticLockException;
 import javax.persistence.PersistenceException;
-import javax.transaction.RollbackException;
+import javax.persistence.RollbackException;
 
 import be.vdab.entities.Campus;
 import be.vdab.entities.Docent;
